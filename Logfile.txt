@@ -1,3 +1,18 @@
 INFO:10/04/2017 08:57:24 AM:
 
 INFO:10/04/2017 08:57:24 AM:*****************Program Start**********************
+INFO:05/23/2018 08:45:33 AM:
+
+INFO:05/23/2018 08:45:33 AM:*****************Program Start**********************
+INFO:05/23/2018 08:45:33 AM:Today is not Monday
+INFO:05/23/2018 08:51:48 AM:
+
+INFO:05/23/2018 08:51:48 AM:*****************Program Start**********************
+INFO:05/23/2018 08:52:03 AM:
+
+INFO:05/23/2018 08:52:03 AM:*****************Program Start**********************
+INFO:05/23/2018 08:52:03 AM:
+
+INFO:05/23/2018 08:52:03 AM:*****************Program Start**********************
+INFO:05/23/2018 08:52:05 AM:Kevin and Jennifer have been notified about the break room 5S checklist
+INFO:05/23/2018 08:52:05 AM:James and Brian have been notified about the copy room 5S checklist

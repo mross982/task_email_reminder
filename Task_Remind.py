@@ -3,12 +3,14 @@ import xlrd
 import os.path
 import sys
 import datetime
+import time
 import logging
 from email import emailtask, emailerror
 
 
 class pathnames(object):
-    sharedfile = os.path.dirname(__file__)  # This is for testing only. Afterwards, I will change this to a shared file on a server.
+    # sharedfile = os.path.dirname(__file__)  # This is for testing only. Afterwards, I will change this to a shared file on a server.
+    sharedfile = 'G:\\Quality\\Experience_and_Performance_Improvement\\Programs & Projects\\Lean Portfolio\\Network\\Projects\\CEE 5S Break Room'
     excelfile = '5S_Volunteers.xlsx'
     logfile = 'Logfile.txt'
     EXCELFILEPATH = os.path.join(sharedfile, excelfile)
@@ -16,12 +18,20 @@ class pathnames(object):
 
 
 def BreakRoomEmailString(ls_br_names):
+    '''
+    Takes a list of employee names and inserts them into a text script which will become the body of the break room email
+    @ ls_br_names (list) - list of employee names in order of primary [0] then secondary [1]
+    '''
     primary = ls_br_names[0]
     backup = ls_br_names[1]
     msg = 'Hello ' + primary + ',' + '\n' + 'You have been tasked with the break room 5S checklist this week and ' + backup +' will be your backup.' + '\n' + 'Thank you,' + '\n' + 'Your automated task reminder :)'
     return msg
 
 def CopyRoomEmailString(ls_cr_names):
+    '''
+    Takes a list of employee names and inserts them into a text script which will become the body of the copy room email
+    @ ls_cr_names (list) - list of employee names in order of primary [0] then secondary [1]
+    '''
     primary = ls_cr_names[0]
     backup = ls_cr_names[1]
     msg = 'Hello ' + primary + ',' + '\n' + 'You have been tasked with the copy room 5S checklist this week and ' + backup +' will be your backup.' + '\n' + 'Thank you,' + '\n' + 'Your automated task reminder :)'
@@ -47,9 +57,10 @@ class c_dataobj(object):
             email.erroremail(title, msg)
             sys.exit(0)
 
+        # today = datetime.datetime.now() - datetime.timedelta(2)
         today = datetime.datetime.now()
         today = today.replace(hour=0, minute=0, second=0, microsecond=0)
-
+        # print(today)
 
         for row in range(datesheet.nrows):
             date = datesheet.cell(row, 0).value
@@ -59,11 +70,28 @@ class c_dataobj(object):
                     br_id_number = int(datesheet.cell(row, 1).value)
                     cr_id_number = int(datesheet.cell(row, 2).value)
                     ids_left = datesheet.nrows - row
+                    c_dataobj.write_excel_date(row)
                     if ids_left <= 2:
                         title = 'ACTION REQUIRED: Error in the Automated email Reminder System!!'
                         msg = 'The breakroom / copyroom task reminder workbook needs to be updated. There are only a few dates left.' + '\n' + str(pathnames.EXCELFILEPATH)
                         email.erroremail(title, msg)
                         break
+                # elif (datesheet.cell(row, 3).value == ""):
+                #     last_sent = datetime.datetime(*xlrd.xldate_as_tuple(datesheet.cell(row - 1, 3).value, book.datemode))
+                #     should_last_sent = today - datetime.timedelta(7)
+                #     if should_last_sent > last_sent:
+                #         print('Whoa')
+                #     else:
+                #         print('OK')
+
+                    # print(datesheet.cell(row-1,3).value)
+                    # print(reminder_date)
+                    # print(today)
+                    # print(today - reminder_date)
+                    # sys.exit(0)
+                    # do something when today - reminder_date is greater than 7
+        # time.sleep(5)
+        # sys.exit(0)
 
         ls_br_names = []
         ls_br_emails = []
@@ -108,6 +136,18 @@ class c_dataobj(object):
 
         c_dataobj.notifyemail(ls_br_names, ls_br_emails, ls_cr_names, ls_cr_emails)
 
+    def write_excel_date(n_row):
+        import openpyxl
+        wb = openpyxl.load_workbook(filename= pathnames.EXCELFILEPATH)
+        ws = wb['Schedule']
+
+        o_today = datetime.datetime.now()
+        # today = today.replace(hour=0, minute=0, second=0, microsecond=0)
+        s_today = o_today.strftime('%m/%d/%Y')
+        ws.cell(row= n_row+1, column=4).value = s_today
+        wb.save(pathnames.EXCELFILEPATH)
+
+
     def notifyemail(ls_br_names, ls_br_emails, ls_cr_names, ls_cr_emails):
 
         br_email_msg = BreakRoomEmailString(ls_br_names)
@@ -120,8 +160,10 @@ class c_dataobj(object):
 
 if __name__ == '__main__':
 
-    c_dataobj()
+    my_obj = c_dataobj()
+    print('running...')
+    # time.sleep(5)
 
-    c_dataobj.excel_data(c_dataobj)
+    my_obj.excel_data()
 
 
