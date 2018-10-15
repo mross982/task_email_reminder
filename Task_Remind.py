@@ -57,7 +57,7 @@ class c_dataobj(object):
             email.erroremail(title, msg)
             sys.exit(0)
 
-        # today = datetime.datetime.now() - datetime.timedelta(2)
+        # today = datetime.datetime.now() - datetime.timedelta(1)
         today = datetime.datetime.now()
         today = today.replace(hour=0, minute=0, second=0, microsecond=0)
         # print(today)
